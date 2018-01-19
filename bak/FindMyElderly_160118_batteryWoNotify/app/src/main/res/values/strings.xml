@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FindMyElderly</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_signup">SignupActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_main__family">MainActivity_Family</string>
+    <string name="title_activity_sign_up__elderly">SignUpActivity_Elderly</string>
+</resources>

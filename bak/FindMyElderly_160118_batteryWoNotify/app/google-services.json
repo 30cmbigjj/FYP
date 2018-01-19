@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "110627031227",
+    "firebase_url": "https://findmyelderly.firebaseio.com",
+    "project_id": "findmyelderly",
+    "storage_bucket": "findmyelderly.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:110627031227:android:9974c5eb776ff483",
+        "android_client_info": {
+          "package_name": "com.findmyelderly.findmyelderly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "110627031227-k5v7ipto35ldcotnlpi81d3uri6a2tpc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.findmyelderly.findmyelderly",
+            "certificate_hash": "f7ac5d39148e50eff3d16f177daabc098f3f220c"
+          }
+        },
+        {
+          "client_id": "110627031227-ms02renrlm3le2ucitl70iaqhu9qnklf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJT7QukrVgdVxKD4g-SFcZ6C-D-dxZjm8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "110627031227-ms02renrlm3le2ucitl70iaqhu9qnklf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
