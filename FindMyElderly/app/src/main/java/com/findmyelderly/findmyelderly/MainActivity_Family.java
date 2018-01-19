@@ -113,7 +113,7 @@ public class MainActivity_Family extends FragmentActivity implements
     }
 
     private void checkElderlyBatteryLV(int batteryLV){
-        if(batteryLV<=100 && batteryLV%5 == 0){
+        if(batteryLV<=40 && batteryLV%5 == 0){
             if(batteryLV!=temp_batteryLV) {
                 temp_batteryLV = batteryLV;
 
