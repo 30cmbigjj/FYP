@@ -270,6 +270,8 @@ public class MainActivity_Family extends FragmentActivity implements
         mQueryMF = mDatabase.child("users").orderByChild("familyId").equalTo(currentUserId);
 
         mQueryMF.addValueEventListener(new ValueEventListener() {
+
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
@@ -293,6 +295,15 @@ public class MainActivity_Family extends FragmentActivity implements
 
                 //String msg = latitude + ", " + longitude+ ", last updated: "+dateTime;
                 String msg = address+"最近更新: "+dateTime +'\n' +"電池還餘: "+batteryLV+"%";
+
+                String title = "現在位置";
+                if (userName==""){
+                    title = "老人"+title;
+                }else{
+                    title = userName+title;
+                }
+
+                String snippet = address+'\n'+"最近更新: "+dateTime +'\n' +"電池還餘: "+batteryLV+"%";
                 tt.setText(msg);
                 //Creating a LatLng Object to store Coordinates
                 LatLng latLng = new LatLng(latitude, longitude);
@@ -303,11 +314,15 @@ public class MainActivity_Family extends FragmentActivity implements
                 }
                 */
                 mMap.clear();
+                //add the custom maker label to the map
+                mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(MainActivity_Family.this));
 
                 Marker label = mMap.addMarker(new MarkerOptions()
                         .position(latLng) //setting position
                         //.draggable(true) //Making the marker draggable
-                        .title(msg));
+                        .title(title)
+                        .snippet(snippet)
+                        );
                 Log.d(TAG,msg);
                 label.showInfoWindow();
 

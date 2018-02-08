@@ -49,23 +49,25 @@
             android:layout_marginLeft="11dp"
             android:layout_marginStart="11dp" />
 
-    <ImageButton
-        android:id="@+id/verbal"
-        android:layout_width="180dp"
-        android:layout_height="190dp"
-        android:layout_below="@+id/textView"
-        android:layout_toEndOf="@+id/help"
-        android:layout_toRightOf="@+id/help"
-        app:srcCompat="@drawable/verbal_input" />
+        <ImageButton
+            android:id="@+id/verbal"
+            android:layout_width="180dp"
+            android:layout_height="190dp"
+            app:srcCompat="@drawable/verbal_input"
+            android:layout_below="@+id/textView"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="17dp"
+            android:layout_marginEnd="17dp" />
 
     <Button
-        android:id="@+id/logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:text="登出" />
+            android:text="登出"
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
     <Button
         android:id="@+id/geofence"
