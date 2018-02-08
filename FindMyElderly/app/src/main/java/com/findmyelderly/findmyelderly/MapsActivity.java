@@ -79,33 +79,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         user = mAuth.getCurrentUser();
 
-        btnFindPath.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendRequest();
-            }
-        });
-    }
-
-
-    private void sendRequest() {
-
-        mDatabase.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+        mDatabase.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                    latitude = dataSnapshot.child("latitude").getValue(Double.class);
-                    longitude = dataSnapshot.child("longitude").getValue(Double.class);
-                    destination = dataSnapshot.child("Address").getValue(String.class);
-                    origin = getCompleteAddressString(latitude, longitude);
-                ((TextView) findViewById(R.id.textView6)).setText(origin);
-                ((TextView) findViewById(R.id.textView7)).setText(destination);
+                latitude = dataSnapshot.child("latitude").getValue(Double.class);
+                longitude = dataSnapshot.child("longitude").getValue(Double.class);
+                destination = dataSnapshot.child("Address").getValue(String.class);
+                origin = getCompleteAddressString(latitude, longitude);
+                temp123.setText(origin);
+                temp456.setText(destination);
+
+                sendRequest();
+        //origin=temp123.getText().toString();
+        //destination=temp456.getText().toString();
+
+                btnFindPath.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    sendRequest();
+                    }
+                });
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        origin=((TextView) findViewById(R.id.textView6)).getText().toString();
-        destination=((TextView) findViewById(R.id.textView7)).getText().toString();
+
+
+    }
+
+
+
+    private void sendRequest() {
+        //origin=((TextView) findViewById(R.id.textView6)).getText().toString();
+        //destination=((TextView) findViewById(R.id.textView7)).getText().toString();
         //((TextView) findViewById(R.id.textView6)).setText("起點: "+origin);
         //((TextView) findViewById(R.id.textView7)).setText("目的地: "+destination);
         //origin = getCompleteAddressString(22.319551, 114.169366);
@@ -173,8 +180,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onDirectionFinderStart() {
-        progressDialog = ProgressDialog.show(this, "Please wait.",
-                "Finding direction..!", true);
+        progressDialog = ProgressDialog.show(this, "請稍等.",
+                "找路中..!", true);
 
         if (originMarkers != null) {
             for (Marker marker : originMarkers) {
@@ -208,11 +215,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
 
             originMarkers.add(mMap.addMarker(new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.start_blue))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.start))
                     .title(route.startAddress)
                     .position(route.startLocation)));
+
             destinationMarkers.add(mMap.addMarker(new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.end_green))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.end))
                     .title(route.endAddress)
                     .position(route.endLocation)));
 

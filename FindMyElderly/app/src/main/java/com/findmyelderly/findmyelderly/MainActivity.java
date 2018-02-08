@@ -1,12 +1,11 @@
 package com.findmyelderly.findmyelderly;
 
-import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.BatteryManager;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -21,10 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import android.os.BatteryManager;
-
-import android.os.Bundle;
-
 
 public class MainActivity extends AppCompatActivity /*implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener*/ {
 
@@ -34,6 +29,7 @@ public class MainActivity extends AppCompatActivity /*implements GoogleApiClient
 
     private ImageButton helpButton;
     private Button logout;
+    private Button add;
     private ImageButton homeButton;
     private Button map;
     private TextView cc;
@@ -46,30 +42,33 @@ public class MainActivity extends AppCompatActivity /*implements GoogleApiClient
 
     private String userId = "";
 
-    //Added by Alan Lee, 15/1/2018, battery level function
     private TextView batteryLV;
 
-    //
-
-
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         helpButton = (ImageButton) findViewById(R.id.help);
         homeButton = (ImageButton) findViewById(R.id.home);
         logout = (Button) findViewById(R.id.logout);
+        add = (Button) findViewById(R.id.geofence);
         cc = (TextView) findViewById(R.id.cc);
 
-        //Added by Alan 15/1/2018
         batteryLV = (TextView) findViewById(R.id.batteryLV);
         registerReceiver(this.batteryInformationReceiver,new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-        // ended
+
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         user = mAuth.getCurrentUser();
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, GeoActivity.class));
+            }
+        });
 
 
         helpButton.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +83,7 @@ public class MainActivity extends AppCompatActivity /*implements GoogleApiClient
             public void onClick(View v) {
                 stopService(new Intent(MainActivity.this,Map.class));
                 unregisterReceiver(broadcastReceiver);
+                unregisterReceiver(batteryInformationReceiver);
                 FirebaseAuth.getInstance().signOut();
                 startActivity(new Intent(MainActivity.this, HomeActivity.class));
             }
@@ -102,48 +102,7 @@ public class MainActivity extends AppCompatActivity /*implements GoogleApiClient
     }
 
 
-    /*@Override
-    protected void onStart() {
-        googleApiClient.connect();
-        super.onStart();
-    }
 
-    @Override
-    protected void onStop() {
-        googleApiClient.disconnect();
-        super.onStop();
-    }*/
-
-
-    //Getting current location
-    //private void getCurrentLocation() {
-        //Creating a location object
-        /*if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            return;
-        }
-        Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);  */
-      /* if (mLastLocation == null) {
-            cc.setText("123");
-        }
-        if (mLastLocation != null) {
-            //Getting longitude and latitude
-            longitude = mLastLocation.getLongitude();
-            latitude = mLastLocation.getLatitude();
-            cc.setText("456"+latitude+longitude);
-            mAuth = FirebaseAuth.getInstance();
-            user = mAuth.getCurrentUser();
-            //save text in edittext into the firebase
-            if (!String.valueOf(latitude).equals(""))
-                mDatabase.child("users").child(user.getUid()).child("latitude").setValue(latitude);
-            if (!String.valueOf(longitude).equals(""))
-                mDatabase.child("users").child(user.getUid()).child("longitude").setValue(longitude);
-
-        }
-    }*/
-
-
-    //Added by Alan 15/1/2018, battery level and noticification
     private BroadcastReceiver batteryInformationReceiver= new BroadcastReceiver() {
 
         @Override
@@ -166,11 +125,10 @@ public class MainActivity extends AppCompatActivity /*implements GoogleApiClient
                 mDatabase.child("users").child(user.getUid()).child("batteryLV").setValue(level);
             }
 
-            if (level<=40 && level%5 == 0){
+            if (level<=100 && level%5 == 0){
             }
         }
     };
-
 
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {

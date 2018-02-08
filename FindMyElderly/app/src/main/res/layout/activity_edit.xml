@@ -11,16 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.findmyelderly.findmyelderly.EditActivity">
 
-    <Button
-        android:text="確定"
-        android:background="#80efe8"
-        android:width="300dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button1"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="27dp" />
-
 
     <EditText
         android:layout_width="wrap_content"
@@ -31,7 +21,7 @@
         android:inputType="textMultiLine"
         android:layout_marginTop="20dp"
         android:id="@+id/editAddress"
-        android:hint="輸入地址"
+        android:hint="輸入住址"
         android:layout_below="@+id/editTel"
         android:layout_alignStart="@+id/editTel"
         android:layout_alignLeft="@+id/editTel"
@@ -43,19 +33,12 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:hint="輸入姓名"
+        android:maxLines="1"
         android:id="@+id/editName"
         android:background="#ffffff"
         android:layout_marginTop="30dp"
 
         android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:text="長者資料"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_width="wrap_content" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -67,10 +50,94 @@
         android:layout_marginTop="22dp"
         android:id="@+id/editTel"
         android:hint="輸入電話號碼"
-
+        android:maxLines="1"
         android:layout_below="@+id/editName"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+
+    <TextView
+        android:text="緊急聯絡人資料"
+        android:layout_height="wrap_content"
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/editAddress"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="長者資料"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="確定"
+        android:background="#80efe8"
+        android:width="300dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button1"
+        android:layout_marginBottom="22dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:hint="輸入地理圍欄的半徑(米)"
+        android:maxLines="1"
+        android:id="@+id/editRadius"
+        android:background="#ffffff"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/radius"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:hint="輸入聯絡人姓名"
+        android:maxLines="1"
+        android:id="@+id/editFName"
+        android:background="#ffffff"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/text1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:background="#ffffff"
+        android:layout_marginTop="14dp"
+        android:id="@+id/editFTel"
+        android:hint="輸入聯絡人電話號碼"
+        android:maxLines="1"
+        android:layout_below="@+id/editFName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="地理圍欄"
+        android:layout_height="wrap_content"
+        android:id="@+id/radius"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="17dp"
+        android:layout_below="@+id/editFTel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
 </RelativeLayout>

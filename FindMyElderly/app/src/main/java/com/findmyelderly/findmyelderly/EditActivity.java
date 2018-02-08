@@ -23,6 +23,9 @@ public class EditActivity extends AppCompatActivity {
     private String tempName ="";
     private String tempTel ="";
     private String tempAddress="";
+    private String tempFName ="";
+    private String tempFTel ="";
+    private float tempRadius=0;
     private String currentUserId;
     private com.google.firebase.database.Query mQueryMF;
 
@@ -38,6 +41,10 @@ public class EditActivity extends AppCompatActivity {
         final EditText tempEdit2   = (EditText)findViewById(R.id.editTel);
         final EditText tempEdit3   = (EditText)findViewById(R.id.editAddress);
 
+        final EditText tempEdit4   = (EditText)findViewById(R.id.editFName);
+        final EditText tempEdit5   = (EditText)findViewById(R.id.editFTel);
+        final EditText tempEdit6   = (EditText)findViewById(R.id.editRadius);
+
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +52,10 @@ public class EditActivity extends AppCompatActivity {
                 tempName =  tempEdit.getText().toString();
                 tempTel = tempEdit2.getText().toString();
                 tempAddress = tempEdit3.getText().toString();
+                tempFName=tempEdit4.getText().toString();
+                tempFTel=tempEdit5.getText().toString();
+                if(!tempEdit6.getText().toString().equals("")){
+                tempRadius=Float.parseFloat(tempEdit6.getText().toString());}
                 //get the current userid
 
                 mAuth = FirebaseAuth.getInstance();
@@ -65,8 +76,13 @@ public class EditActivity extends AppCompatActivity {
                     mDatabase.child("users").child(elderlyId).child("Tel").setValue(tempTel);
                 if(!tempAddress.equals(""))
                     mDatabase.child("users").child(elderlyId).child("Address").setValue(tempAddress);
-                //progressDialog.dismiss();
-                //finish();
+                        if(tempRadius!=0.0f)
+                            mDatabase.child("users").child(elderlyId).child("radius").setValue(tempRadius);
+
+                        if(!tempFName.equals(""))
+                            mDatabase.child("users").child(currentUserId).child("userName").setValue(tempFName);
+                        if(!tempFTel.equals(""))
+                            mDatabase.child("users").child(currentUserId).child("Tel").setValue(tempFTel);
             }
 
                     @Override

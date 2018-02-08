@@ -99,12 +99,28 @@ public class SignUpActivity_Elderly extends AppCompatActivity {
         private String userName;
         private String type;
         private String familyId;
+        private boolean help;
+        private float radius; 	//default geofencing radius
+        private boolean outGeo; //for family geofencing notification
+        private double latitude;
+        private double longitude;
+        private String dateTime;
+        private Integer batteryLV;
+
 
         public User(String email) {
             this.email = email;
             this.userName = "";
             this.type="elderly";
             this.familyId="";
+            this.help=false;
+            this.outGeo=false;
+            this.radius=1609; //1 miles
+            this.latitude=22.316362;
+            this.longitude=114.180287;
+            this.dateTime="N/A";
+            this.batteryLV=100;
+
         }
 
         public String getEmail() {
@@ -115,6 +131,13 @@ public class SignUpActivity_Elderly extends AppCompatActivity {
             return userName;
         }
         public String getFamilyId(){return familyId;}
+        public float getRadius(){return radius;}
+        public boolean getHelp(){return help;}
+        public boolean getoutGeo(){return outGeo;}
+        public String getDateTime(){return dateTime;}
+        public Integer getBatteryLV() {return batteryLV;}
+        public double getLatitude() {return latitude;}
+        public double getLongitude() {return longitude;}
     }
 
 

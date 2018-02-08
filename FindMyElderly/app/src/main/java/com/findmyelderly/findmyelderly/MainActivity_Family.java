@@ -1,6 +1,5 @@
 package com.findmyelderly.findmyelderly;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -43,7 +42,6 @@ public class MainActivity_Family extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         GoogleMap.OnMarkerDragListener,
-        GoogleMap.OnMapLongClickListener,
         View.OnClickListener {
 
     private Button logout;
@@ -62,6 +60,11 @@ public class MainActivity_Family extends FragmentActivity implements
     private int batteryLV;
     private int temp_batteryLV = 0;
     private boolean batteryLVChecked;
+    private boolean help = false;
+    private boolean outGeo=false;
+    private String userName="長者";
+    private String elderlyId="";
+    private Marker m;
 
 
     //Our Map
@@ -71,6 +74,8 @@ public class MainActivity_Family extends FragmentActivity implements
     //notification
     NotificationCompat.Builder notification;
     private static final int uniqueID = 45612;
+    private static final int uniqueID2 = 456;
+    private static final int uniqueID3 = 123;
     private static final String TAG = "MainActivity_Family";
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,20 +115,25 @@ public class MainActivity_Family extends FragmentActivity implements
             }
         });
 
+
     }
 
-    private void checkElderlyBatteryLV(int batteryLV){
+
+    private void checkElderlyBatteryLV(int batteryLV,String name){
         if(batteryLV<=40 && batteryLV%5 == 0){
             if(batteryLV!=temp_batteryLV) {
                 temp_batteryLV = batteryLV;
 
                 //local notification
                 //notification body
+                if (name== ""){
+                    name="長者";
+                }
                 notification.setSmallIcon(R.drawable.ic_clock);
-                notification.setTicker("Elderly's phone battery is low");
+                notification.setTicker(name+"的手機電量低下!");
                 notification.setWhen(System.currentTimeMillis());
-                notification.setContentTitle("Elderly's phone battery is low");
-                notification.setContentText("Elderly's phone battery only have "+batteryLV+"% remaining.");
+                notification.setContentTitle(name+"的手機電量低下!");
+                notification.setContentText(name+"的手機電量只餘 "+batteryLV+"% !");
                 //Notification ElderlyLowBatteryAlert = new Notification();
 
                 //intent to get to the page
@@ -138,9 +148,96 @@ public class MainActivity_Family extends FragmentActivity implements
 
                 //FCM notification
                 String token = FirebaseInstanceId.getInstance().getToken();
-                Toast.makeText(MainActivity_Family.this, token, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity_Family.this, "你有一則新通知", Toast.LENGTH_SHORT).show();
                 Log.w("",token);
             }
+        }
+    }
+
+    private void checkHelp(boolean seekHelp,String name) {
+
+        if (name== ""){
+            name="長者";
+        }
+
+        if (seekHelp == true) {
+            notification.setSmallIcon(R.drawable.ic_clock);
+            notification.setTicker(name+"需要幫助");
+            notification.setWhen(System.currentTimeMillis());
+            notification.setContentTitle(name+"需要你的幫助");
+            notification.setContentText(name+"迷路了!.");
+            //Notification ElderlyLowBatteryAlert = new Notification();
+
+            //intent to get to the page
+            Intent intent = new Intent(this, MainActivity_Family.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            notification.setContentIntent(pendingIntent);
+
+            //sending out notification
+            NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+            nm.notify(uniqueID2, notification.build());
+
+
+            //FCM notification
+            String token = FirebaseInstanceId.getInstance().getToken();
+            Toast.makeText(MainActivity_Family.this, "你有一則新通知!", Toast.LENGTH_SHORT).show();
+            Log.w("",token);
+            mDatabase.child("users").child(currentUserId).child("elderlyId").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    elderlyId =dataSnapshot.getValue(String.class);
+                    mDatabase.child("users").child(elderlyId).child("help").setValue(false);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        }
+    }
+
+
+    private void checkGeo(boolean out,String name) {
+
+        if (name== ""){
+            name="長者";
+        }
+
+        if (out == true) {
+            notification.setSmallIcon(R.drawable.ic_clock);
+            notification.setTicker("注意!");
+            notification.setWhen(System.currentTimeMillis());
+            notification.setContentTitle(name+"需要你的注意");
+            notification.setContentText(name+"離開了安全圍欄!");
+            //Notification ElderlyLowBatteryAlert = new Notification();
+
+            //intent to get to the page
+            Intent intent = new Intent(this, MainActivity_Family.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            notification.setContentIntent(pendingIntent);
+
+            //sending out notification
+            NotificationManager nm = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+            nm.notify(uniqueID3, notification.build());
+
+
+            //FCM notification
+            String token = FirebaseInstanceId.getInstance().getToken();
+            Toast.makeText(MainActivity_Family.this, "你有一則新通知!", Toast.LENGTH_SHORT).show();
+            Log.w("",token);
+            mDatabase.child("users").child(currentUserId).child("elderlyId").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    elderlyId =dataSnapshot.getValue(String.class);
+                    mDatabase.child("users").child(elderlyId).child("outGeo").setValue(false);
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
         }
     }
 
@@ -181,24 +278,47 @@ public class MainActivity_Family extends FragmentActivity implements
                     dateTime = userSnapshot.child("dateTime").getValue(String.class);
                     address = getCompleteAddressString(latitude,longitude);
                     batteryLV = userSnapshot.child("batteryLV").getValue(Integer.class);
+                    help = userSnapshot.child("help").getValue(Boolean.class);
+                    outGeo=userSnapshot.child("outGeo").getValue(Boolean.class);
+                    userName=userSnapshot.child("userName").getValue(String.class);
+
                 }
                 //String to display current latitude and longitude
                 //DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 //dateTime = df.format(dateTime);
+                checkHelp(help,userName);
+                checkGeo(outGeo,userName);
+                checkElderlyBatteryLV(batteryLV,userName);
 
-                checkElderlyBatteryLV(batteryLV);
 
                 //String msg = latitude + ", " + longitude+ ", last updated: "+dateTime;
-                String msg = address+", last updated: "+dateTime + "battery="+batteryLV+"%";
+                String msg = address+"最近更新: "+dateTime +'\n' +"電池還餘: "+batteryLV+"%";
                 tt.setText(msg);
                 //Creating a LatLng Object to store Coordinates
                 LatLng latLng = new LatLng(latitude, longitude);
                 //Adding marker to map
-                mMap.addMarker(new MarkerOptions()
+                /*
+                if (m != null) {
+                    m.remove();
+                }
+                */
+                mMap.clear();
+
+                Marker label = mMap.addMarker(new MarkerOptions()
+                        .position(latLng) //setting position
+                        //.draggable(true) //Making the marker draggable
+                        .title(msg));
+                Log.d(TAG,msg);
+                label.showInfoWindow();
+
+
+
+                /*
+                m=mMap.addMarker(new MarkerOptions()
                         .position(latLng) //setting position
                         .draggable(true) //Making the marker draggable
-                        .title("Current Location")); //Adding a title
-
+                        .title("現在位置")); //Adding a title
+                */
                 //Moving the camera
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
@@ -213,20 +333,15 @@ public class MainActivity_Family extends FragmentActivity implements
 
     }
 
-//Function to move the map
-/*private void moveMap() {
-    //Displaying current coordinates in toast
-    //Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-}*/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         LatLng latLng = new LatLng(22.316333,114.180298);
-        mMap.addMarker(new MarkerOptions().position(latLng).draggable(true));
+        //mMap.addMarker(new MarkerOptions().position(latLng).draggable(true));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.setOnMarkerDragListener(this);
-        mMap.setOnMapLongClickListener(this);
+
     }
 
     @Override
@@ -244,7 +359,7 @@ public class MainActivity_Family extends FragmentActivity implements
 
     }
 
-    @Override
+    /*@Override
     public void onMapLongClick(LatLng latLng) {
         //Clearing all the markers
         mMap.clear();
@@ -253,7 +368,7 @@ public class MainActivity_Family extends FragmentActivity implements
         mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .draggable(true));
-    }
+    }*/
 
     @Override
     public void onMarkerDragStart(Marker marker) {
@@ -278,4 +393,11 @@ public class MainActivity_Family extends FragmentActivity implements
             getCurrentLocation();
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getCurrentLocation();
+    }
+
 }

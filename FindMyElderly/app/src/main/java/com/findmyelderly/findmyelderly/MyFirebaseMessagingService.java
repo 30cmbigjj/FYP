@@ -16,7 +16,7 @@ import android.util.Log;
  */
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    private static final String TAG = "MyFirebaseMessageService";
+    private static final String TAG = "FirebaseMessageService";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {

@@ -19,18 +19,12 @@ tools:context=".MainActivity_Family">
         android:orientation="vertical"
         android:weightSum="1">
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.11"
-            android:text="編輯" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#cc3b60a7"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_weight="0.03">
 
             <ImageButton
                 android:id="@+id/buttonCurrent"
@@ -43,20 +37,26 @@ tools:context=".MainActivity_Family">
                 android:id="@+id/tt"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.80"
                 android:text="TextView" />
 
             <Button
+                android:id="@+id/button2"
+                android:text="編輯"
+                android:layout_height="50dp"
+                android:layout_width="60dp" />
+
+            <Button
                 android:id="@+id/logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="50dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_toEndOf="@+id/main_info"
                 android:layout_toRightOf="@+id/main_info"
-                android:text="logout" />
+                android:text="登出"
+                android:layout_height="50dp"
+                android:layout_width="60dp" />
 
 
         </LinearLayout>

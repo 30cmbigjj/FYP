@@ -26,7 +26,7 @@ public class Map extends Service implements LocationListener {
     Location location;
     private Handler mHandler = new Handler();
     private Timer mTimer = null;
-    long notify_interval = 1000*5;
+    long notify_interval = 1000*60;
     public static String str_receiver = "servicetutorial.service.receiver";
     Intent intent;
 

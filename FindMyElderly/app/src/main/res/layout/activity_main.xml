@@ -60,21 +60,8 @@
             android:layout_marginRight="17dp"
             android:layout_marginEnd="17dp" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="求救"
-            android:textColor="#000000"
-            android:textSize="30sp"
-            android:layout_marginRight="42dp"
-            android:layout_marginEnd="42dp"
-            android:layout_below="@+id/verbal"
-            android:layout_toLeftOf="@+id/textView"
-            android:layout_toStartOf="@+id/textView" />
-
-        <Button
-            android:text="logout"
+    <Button
+            android:text="登出"
             android:id="@+id/logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -103,6 +90,28 @@
         android:layout_below="@+id/cc"
         android:layout_marginTop="22dp"
         android:text="現在電力：" />
+
+    <Button
+        android:id="@+id/geofence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="加入圍欄"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/cc" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="求救"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        android:layout_marginRight="27dp"
+        android:layout_marginEnd="27dp"
+        android:layout_below="@+id/verbal"
+        android:layout_toLeftOf="@+id/textView"
+        android:layout_toStartOf="@+id/textView" />
 
 </RelativeLayout>
 
