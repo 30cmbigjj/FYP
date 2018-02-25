@@ -39,7 +39,7 @@ import java.util.List;
 
 public class SpeechActivity extends AppCompatActivity {
 
-    public static final String TAG = "MainActivity";
+    public static final String TAG = "SpeechActivity";
 
     private static final int RECORD_REQUEST_CODE = 101;
     @BindView(R.id.status)
@@ -107,7 +107,7 @@ public class SpeechActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        speechAPI = new SpeechAPI(MainActivity.this);
+        speechAPI = new SpeechAPI(SpeechActivity.this);
         stringList = new ArrayList<>();
         adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, stringList);
