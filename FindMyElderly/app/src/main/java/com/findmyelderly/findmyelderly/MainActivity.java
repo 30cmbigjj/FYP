@@ -32,8 +32,11 @@ public class MainActivity extends AppCompatActivity /*implements GoogleApiClient
     private Button add;
     private ImageButton homeButton;
     private Button map;
-    private TextView cc;
+    //private TextView cc;
     private String dateTime;
+
+
+    private ImageButton verbalButton;
     //Google ApiClient
     //private GoogleApiClient googleApiClient;
 
@@ -42,7 +45,7 @@ public class MainActivity extends AppCompatActivity /*implements GoogleApiClient
 
     private String userId = "";
 
-    private TextView batteryLV;
+    //private TextView batteryLV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +55,11 @@ public class MainActivity extends AppCompatActivity /*implements GoogleApiClient
         homeButton = (ImageButton) findViewById(R.id.home);
         logout = (Button) findViewById(R.id.logout);
         add = (Button) findViewById(R.id.geofence);
-        cc = (TextView) findViewById(R.id.cc);
+        verbalButton = (ImageButton) findViewById(R.id.verbal);
 
-        batteryLV = (TextView) findViewById(R.id.batteryLV);
+        //cc = (TextView) findViewById(R.id.cc);
+
+        //batteryLV = (TextView) findViewById(R.id.batteryLV);
         registerReceiver(this.batteryInformationReceiver,new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
 
@@ -96,6 +101,13 @@ public class MainActivity extends AppCompatActivity /*implements GoogleApiClient
             }
         });
 
+        verbalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SpeechActivity.class));
+            }
+        });
+
 
         startService(new Intent(MainActivity.this,Map.class));
 
@@ -120,7 +132,7 @@ public class MainActivity extends AppCompatActivity /*implements GoogleApiClient
             mAuth = FirebaseAuth.getInstance();
             user = mAuth.getCurrentUser();
 
-            batteryLV.setText("現在電力："+level+"%\n");
+            //batteryLV.setText("現在電力："+level+"%\n");
             if (!Integer.valueOf(level).equals(null)){
                 mDatabase.child("users").child(user.getUid()).child("batteryLV").setValue(level);
             }
@@ -138,7 +150,7 @@ public class MainActivity extends AppCompatActivity /*implements GoogleApiClient
             latitude = Double.valueOf(intent.getStringExtra("latutide"));
             longitude = Double.valueOf(intent.getStringExtra("longitude"));
 
-            cc.setText("LOC:   "+latitude+" , "+longitude);
+            //cc.setText("LOC:   "+latitude+" , "+longitude);
             mAuth = FirebaseAuth.getInstance();
             user = mAuth.getCurrentUser();
             //added by alan, 11/12/2017

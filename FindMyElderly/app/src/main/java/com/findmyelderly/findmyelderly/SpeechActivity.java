@@ -39,7 +39,7 @@ import java.util.List;
 
 public class SpeechActivity extends AppCompatActivity {
 
-    public static final String TAG = "SpeechActivity";
+    public static final String TAG = "MainActivity";
 
     private static final int RECORD_REQUEST_CODE = 101;
     @BindView(R.id.status)
