@@ -1,7 +1,7 @@
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.protobuf'
-apply plugin: 'com.neenbedankt.android-apt'
+
 
 ext {
     grpcVersion = '1.4.0'

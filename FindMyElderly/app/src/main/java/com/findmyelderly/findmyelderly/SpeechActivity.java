@@ -32,15 +32,6 @@ public class SpeechActivity extends AppCompatActivity {
     TextView textMessage;
     @BindView(R.id.listview)
     ListView listView;
-    /*
-    private TextView status;
-
-    //@BindView(R.id.textMessage) TextView textMessage;
-    private TextView textMessage;
-
-    //@BindView(R.id.list) ListView listView;
-    private ListView list;
-    */
 
     private List<String> stringList;
     private SpeechAPI speechAPI;
