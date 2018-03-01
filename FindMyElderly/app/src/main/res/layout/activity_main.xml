@@ -75,8 +75,7 @@
         android:layout_height="wrap_content"
         android:text="加入圍欄"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/cc" />
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:id="@+id/textView2"

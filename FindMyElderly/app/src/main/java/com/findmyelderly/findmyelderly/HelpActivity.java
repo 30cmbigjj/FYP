@@ -151,6 +151,7 @@ public class HelpActivity extends AppCompatActivity {
 
                 }
                 Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneno));
+
                 startActivity(intent);
             }
             @Override

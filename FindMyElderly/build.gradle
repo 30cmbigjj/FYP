@@ -13,6 +13,7 @@ buildscript {
         classpath 'com.google.gms:google-services:3.0.0'
         // for gRPC
         classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.0"
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 

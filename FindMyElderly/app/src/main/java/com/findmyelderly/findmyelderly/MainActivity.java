@@ -108,7 +108,6 @@ public class MainActivity extends AppCompatActivity /*implements GoogleApiClient
             }
         });
 
-
         startService(new Intent(MainActivity.this,Map.class));
 
     }

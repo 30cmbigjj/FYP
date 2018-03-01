@@ -1,11 +1,13 @@
 package com.findmyelderly.findmyelderly;
 
-import android.*;
+
+import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpanWatcher;
 import android.text.TextUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -14,41 +16,31 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * Created by alanlee on 25/2/2018.
- */
-
-
-        import android.Manifest;
-        import android.content.pm.PackageManager;
-        import android.os.Bundle;
-        import android.support.v4.app.ActivityCompat;
-        import android.support.v4.content.ContextCompat;
-        import android.support.v7.app.AppCompatActivity;
-        import android.text.TextUtils;
-        import android.widget.ArrayAdapter;
-        import android.widget.ListView;
-        import android.widget.TextView;
-
-        import java.util.ArrayList;
-        import java.util.List;
-
-        import butterknife.BindView;
-        import butterknife.ButterKnife;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class SpeechActivity extends AppCompatActivity {
 
-    public static final String TAG = "MainActivity";
+    public static final String TAG = "SpeechActivity";
 
     private static final int RECORD_REQUEST_CODE = 101;
+
+    //@BindView(R.id.status) TextView status;
     @BindView(R.id.status)
     TextView status;
     @BindView(R.id.textMessage)
     TextView textMessage;
-
     @BindView(R.id.listview)
     ListView listView;
+    /*
+    private TextView status;
+
+    //@BindView(R.id.textMessage) TextView textMessage;
+    private TextView textMessage;
+
+    //@BindView(R.id.list) ListView listView;
+    private ListView list;
+    */
 
     private List<String> stringList;
     private SpeechAPI speechAPI;
@@ -77,7 +69,7 @@ public class SpeechActivity extends AppCompatActivity {
         }
 
     };
-    private ArrayAdapter adapter;
+    private ArrayAdapter<String> adapter;
     private final SpeechAPI.Listener mSpeechServiceListener =
             new SpeechAPI.Listener() {
                 @Override
@@ -105,7 +97,7 @@ public class SpeechActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_speech);
         ButterKnife.bind(this);
         speechAPI = new SpeechAPI(SpeechActivity.this);
         stringList = new ArrayList<>();
@@ -134,10 +126,10 @@ public class SpeechActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (isGrantedPermission(android.Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+        if (isGrantedPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
             startVoiceRecorder();
         } else {
-            makeRequest(android.Manifest.permission.RECORD_AUDIO);
+            makeRequest(Manifest.permission.RECORD_AUDIO);
         }
         speechAPI.addListener(mSpeechServiceListener);
     }
@@ -178,4 +170,3 @@ public class SpeechActivity extends AppCompatActivity {
     }
 
 }
-
