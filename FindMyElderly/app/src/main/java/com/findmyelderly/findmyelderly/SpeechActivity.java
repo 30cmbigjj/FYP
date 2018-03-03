@@ -2,13 +2,16 @@ package com.findmyelderly.findmyelderly;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpanWatcher;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -76,6 +79,8 @@ public class SpeechActivity extends AppCompatActivity {
                                     textMessage.setText(null);
                                     stringList.add(0,text);
                                     adapter.notifyDataSetChanged();
+                                    Log.w(TAG, text);
+                                    speechStrAnalyze(text);
                                 } else {
                                     textMessage.setText(text);
                                 }
@@ -102,11 +107,23 @@ public class SpeechActivity extends AppCompatActivity {
         stopVoiceRecorder();
 
         // Stop Cloud Speech API
-        speechAPI.removeListener(mSpeechServiceListener);
-        speechAPI.destroy();
-        speechAPI = null;
+        try
+        {
+            speechAPI.addListener(mSpeechServiceListener);
+            speechAPI.destroy();
+            speechAPI = null;
 
+        }catch (java.lang.NullPointerException exception)
+        {
+            Log.w(TAG,exception);
+            startActivity(new Intent(SpeechActivity.this, MainActivity.class));
+        }
+        catch (Exception exception){
+            Log.w(TAG,exception);
+            startActivity(new Intent(SpeechActivity.this, MainActivity.class));
+        }
         super.onStop();
+
     }
 
     @Override
@@ -122,7 +139,15 @@ public class SpeechActivity extends AppCompatActivity {
         } else {
             makeRequest(Manifest.permission.RECORD_AUDIO);
         }
-        speechAPI.addListener(mSpeechServiceListener);
+
+        try
+        {
+            speechAPI.addListener(mSpeechServiceListener);
+        }catch (java.lang.NullPointerException exception)
+        {
+            Log.w(TAG,exception);
+            startActivity(new Intent(SpeechActivity.this, MainActivity.class));
+        }
     }
 
     private int isGrantedPermission(String permission) {
@@ -156,6 +181,18 @@ public class SpeechActivity extends AppCompatActivity {
                 finish();
             } else {
                 startVoiceRecorder();
+            }
+        }
+    }
+
+    private void speechStrAnalyze(String inputStr){
+        if(inputStr.contains("屋企")){
+            Log.w(TAG,"have string : 屋企");
+            startActivity(new Intent(SpeechActivity.this, MapsActivity.class));
+        }else{
+            if (inputStr.contains("回家")){
+                Log.w(TAG,"have string : 回家");
+                startActivity(new Intent(SpeechActivity.this, MapsActivity.class));
             }
         }
     }
