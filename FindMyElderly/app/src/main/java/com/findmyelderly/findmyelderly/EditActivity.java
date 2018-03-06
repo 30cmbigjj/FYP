@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,6 +47,8 @@ public class EditActivity extends AppCompatActivity {
         final EditText tempEdit6   = (EditText)findViewById(R.id.editRadius);
 
 
+
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,10 +67,10 @@ public class EditActivity extends AppCompatActivity {
 
                 //mQueryMF = mDatabase.child("users").orderByChild("familyId").equalTo(currentUserId);
 
-                mDatabase.child("users").child(currentUserId).child("elderlyId").addValueEventListener(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child("edit").orderByChild("email").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                            elderlyId =dataSnapshot.getValue(String.class);
+                            elderlyId =dataSnapshot.child("elderlyId").getValue(String.class);
 
                 //save text in edittext into the firebase
                 if(!tempName.equals(""))
@@ -75,7 +78,7 @@ public class EditActivity extends AppCompatActivity {
                 if(!tempTel.equals(""))
                     mDatabase.child("users").child(elderlyId).child("Tel").setValue(tempTel);
                 if(!tempAddress.equals(""))
-                    mDatabase.child("users").child(elderlyId).child("Address").setValue(tempAddress);
+                    mDatabase.child("users").child(elderlyId).child("address").setValue(tempAddress);
                         if(tempRadius!=0.0f)
                             mDatabase.child("users").child(elderlyId).child("radius").setValue(tempRadius);
 

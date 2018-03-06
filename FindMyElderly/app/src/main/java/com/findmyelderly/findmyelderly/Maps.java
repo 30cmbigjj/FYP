@@ -17,7 +17,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class Map extends Service implements LocationListener {
+public class Maps extends Service implements LocationListener {
 
     boolean isGPSEnable = false;
     boolean isNetworkEnable = false;
@@ -31,7 +31,7 @@ public class Map extends Service implements LocationListener {
     Intent intent;
 
 
-    public Map() {
+    public Maps() {
 
     }
 

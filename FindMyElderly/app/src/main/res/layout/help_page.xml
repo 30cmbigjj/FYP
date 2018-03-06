@@ -9,9 +9,8 @@
         android:id="@+id/familyicon"
         android:layout_width="250dp"
         android:layout_height="240dp"
-        android:layout_alignTop="@+id/add"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="19dp"
         app:srcCompat="@drawable/family" />
 
     <TextView
@@ -21,7 +20,7 @@
         android:text="家人"
         android:textColor="#000000"
         android:textSize="30sp"
-        android:layout_above="@+id/imageButton"
+        android:layout_above="@+id/police"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="14dp" />
 
@@ -30,20 +29,9 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@mipmap/ic_add"
-        android:layout_marginRight="13dp"
-        android:layout_marginEnd="13dp"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/familyicon"
-        android:layout_alignEnd="@+id/familyicon"
-        android:layout_marginTop="14dp" />
-
-    <ImageButton
-        android:id="@+id/police"
-        android:layout_width="200dp"
-        android:layout_height="240dp"
-        android:layout_above="@+id/textView4"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/police" />
+        android:layout_alignEnd="@+id/familyicon" />
 
     <TextView
         android:id="@+id/textView4"
@@ -54,7 +42,17 @@
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/textView"
         android:layout_alignStart="@+id/textView"
+        android:layout_marginBottom="30dp"
         android:text="警察"
         android:textColor="#000000"
         android:textSize="30sp" />
+
+    <ImageButton
+        android:id="@+id/police"
+        android:layout_width="200dp"
+        android:layout_height="240dp"
+        app:srcCompat="@drawable/police"
+        android:layout_alignBottom="@+id/textView4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="21dp" />
 </RelativeLayout>

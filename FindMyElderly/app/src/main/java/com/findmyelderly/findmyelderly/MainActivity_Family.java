@@ -1,12 +1,18 @@
 package com.findmyelderly.findmyelderly;
 
+//import android.app.FragmentTransaction;
+
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +27,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -33,6 +41,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,11 +74,15 @@ public class MainActivity_Family extends FragmentActivity implements
     private String userName="長者";
     private String elderlyId="";
     private Marker m;
-
+    private Fragment fragment;
+    private FragmentManager fragmentManager;
+    private float radius=0.0f;
+    private double templat;
+    private double templon;
+    private String home="";
 
     //Our Map
     private GoogleMap mMap;
-
 
     //notification
     NotificationCompat.Builder notification;
@@ -108,10 +121,15 @@ public class MainActivity_Family extends FragmentActivity implements
                 startActivity(new Intent(MainActivity_Family.this, HomeActivity.class));
             }
         });
+
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity_Family.this, EditActivity.class));
+
+                fragment = new FragmentEditList();
+                FragmentManager manager = getSupportFragmentManager();
+                final FragmentTransaction transaction = manager.beginTransaction();
+                transaction.replace(R.id.main_container, fragment).commit();
             }
         });
 
@@ -124,11 +142,11 @@ public class MainActivity_Family extends FragmentActivity implements
             if(batteryLV!=temp_batteryLV) {
                 temp_batteryLV = batteryLV;
 
-                //local notification
-                //notification body
                 if (name== ""){
                     name="長者";
                 }
+                //local notification
+                //notification body
                 notification.setSmallIcon(R.drawable.ic_clock);
                 notification.setTicker(name+"的手機電量低下!");
                 notification.setWhen(System.currentTimeMillis());
@@ -155,7 +173,6 @@ public class MainActivity_Family extends FragmentActivity implements
     }
 
     private void checkHelp(boolean seekHelp,String name) {
-
         if (name== ""){
             name="長者";
         }
@@ -165,7 +182,7 @@ public class MainActivity_Family extends FragmentActivity implements
             notification.setTicker(name+"需要幫助");
             notification.setWhen(System.currentTimeMillis());
             notification.setContentTitle(name+"需要你的幫助");
-            notification.setContentText(name+"迷路了!.");
+            notification.setContentText(name+"迷路了!");
             //Notification ElderlyLowBatteryAlert = new Notification();
 
             //intent to get to the page
@@ -199,7 +216,6 @@ public class MainActivity_Family extends FragmentActivity implements
 
 
     private void checkGeo(boolean out,String name) {
-
         if (name== ""){
             name="長者";
         }
@@ -270,8 +286,6 @@ public class MainActivity_Family extends FragmentActivity implements
         mQueryMF = mDatabase.child("users").orderByChild("familyId").equalTo(currentUserId);
 
         mQueryMF.addValueEventListener(new ValueEventListener() {
-
-
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
@@ -279,10 +293,13 @@ public class MainActivity_Family extends FragmentActivity implements
                     longitude = userSnapshot.child("longitude").getValue(Double.class);
                     dateTime = userSnapshot.child("dateTime").getValue(String.class);
                     address = getCompleteAddressString(latitude,longitude);
+                    home=userSnapshot.child("address").getValue(String.class);
                     batteryLV = userSnapshot.child("batteryLV").getValue(Integer.class);
                     help = userSnapshot.child("help").getValue(Boolean.class);
                     outGeo=userSnapshot.child("outGeo").getValue(Boolean.class);
                     userName=userSnapshot.child("userName").getValue(String.class);
+                    radius=userSnapshot.child("radius").getValue(Float.class);
+
 
                 }
                 //String to display current latitude and longitude
@@ -295,7 +312,6 @@ public class MainActivity_Family extends FragmentActivity implements
 
                 //String msg = latitude + ", " + longitude+ ", last updated: "+dateTime;
                 String msg = address+"最近更新: "+dateTime +'\n' +"電池還餘: "+batteryLV+"%";
-
                 String title = "現在位置";
                 if (userName==""){
                     title = "老人"+title;
@@ -326,14 +342,17 @@ public class MainActivity_Family extends FragmentActivity implements
                 Log.d(TAG,msg);
                 label.showInfoWindow();
 
+                //add circle for geofencing
+                LatLng result = getLocationFromAddress(home);
+                templat = result.latitude;
+                templon = result.longitude;
+
+                Circle circle=mMap.addCircle(new CircleOptions()
+                        .center(new LatLng(templat, templon))
+                        .strokeColor(Color.BLUE)
+                        .radius(radius)); // In meters
 
 
-                /*
-                m=mMap.addMarker(new MarkerOptions()
-                        .position(latLng) //setting position
-                        .draggable(true) //Making the marker draggable
-                        .title("現在位置")); //Adding a title
-                */
                 //Moving the camera
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
@@ -358,6 +377,22 @@ public class MainActivity_Family extends FragmentActivity implements
         mMap.setOnMarkerDragListener(this);
 
     }
+
+    public LatLng getLocationFromAddress(String Address) {
+        Geocoder coder = new Geocoder(this);
+        LatLng point = null;
+        try {
+            List<Address> address = coder.getFromLocationName(Address,1);
+            if (address == null)
+                return null;
+            Address location = address.get(0);
+            point = new LatLng(location.getLatitude(),location.getLongitude());
+        } catch (IOException e) {
+            e.getMessage();
+        }
+        return point;
+    }
+
 
     @Override
     public void onConnected(Bundle bundle) {

@@ -20,8 +20,8 @@
     <string name="geofence_exit">離開了圍欄</string>
     <string name="unknown_geofence_error_transition">Unknown Transition</string>
     <string name="unknown_geofence_error_transition_type">invalid type</string>
-    <string name="geofence_transition_notification">NotificationGeofenceIntent</string>
-    <string name="not_conected">No conectado</string>
+    <string name="geofence_transition_notification">你離開了安全圍欄!</string>
+    <string name="not_conected">No api connection</string>
 
     <string name="insufficient_permissions">Insufficient permissions.</string>
     <string name="permission_rationale">Location permission is needed for core functionality</string>

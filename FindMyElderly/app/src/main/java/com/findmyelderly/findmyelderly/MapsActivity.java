@@ -84,7 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onDataChange(DataSnapshot dataSnapshot) {
                 latitude = dataSnapshot.child("latitude").getValue(Double.class);
                 longitude = dataSnapshot.child("longitude").getValue(Double.class);
-                destination = dataSnapshot.child("Address").getValue(String.class);
+                destination = dataSnapshot.child("address").getValue(String.class);
                 origin = getCompleteAddressString(latitude, longitude);
                 temp123.setText(origin);
                 temp456.setText(destination);
@@ -218,7 +218,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.start))
                     .title(route.startAddress)
                     .position(route.startLocation)));
-
             destinationMarkers.add(mMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.end))
                     .title(route.endAddress)

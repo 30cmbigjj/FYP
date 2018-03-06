@@ -13,7 +13,6 @@
             android:hint="電郵地址"
             android:textSize="15sp"
             android:textColor="#000000"
-            android:maxLines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
@@ -27,7 +26,6 @@
             android:hint="密碼"
             android:textSize="15sp"
             android:textColor="#000000"
-            android:maxLines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
@@ -37,4 +35,17 @@
         android:id="@+id/signup_button"
         android:layout_width="200dp"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/family"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="已有家人"
+        android:layout_below="@+id/signup_button"
+        android:layout_alignLeft="@+id/signup_button"
+        android:layout_alignStart="@+id/signup_button"
+        android:layout_alignRight="@+id/signup_button"
+        android:layout_alignEnd="@+id/signup_button" />
+
+
 </RelativeLayout>

@@ -14,6 +14,10 @@ import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +28,9 @@ import java.util.List;
 
 public class GeofenceTransitionsIntentService extends IntentService{
     protected static String name=GeofenceTransitionsIntentService.class.getSimpleName();
+    private DatabaseReference mDatabase;
+    private FirebaseUser user;
+    private FirebaseAuth mAuth;
 
 
 
@@ -35,6 +42,9 @@ public class GeofenceTransitionsIntentService extends IntentService{
     @Override
     public void onCreate() {
         super.onCreate();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
     }
 
     @Override
@@ -42,13 +52,18 @@ public class GeofenceTransitionsIntentService extends IntentService{
 
         GeofencingEvent geofencingEvent= GeofencingEvent.fromIntent(intent);
         if(geofencingEvent.hasError()){
-            String error=GeofenceErrorMessages.getErrorStr(this,geofencingEvent.getErrorCode());
+            String error= GeofenceErrorMessages.getErrorStr(this,geofencingEvent.getErrorCode());
             Log.e(name,error);
             return;
         }
         int geofenceTransition=geofencingEvent.getGeofenceTransition();
-        if(geofenceTransition== Geofence.GEOFENCE_TRANSITION_ENTER||
-                geofenceTransition== Geofence.GEOFENCE_TRANSITION_EXIT) {
+
+        if(geofenceTransition== Geofence.GEOFENCE_TRANSITION_ENTER){
+            mDatabase.child("users").child(user.getUid()).child("outGeo").setValue(false);
+        }
+        if(geofenceTransition== Geofence.GEOFENCE_TRANSITION_EXIT) {
+
+            mDatabase.child("users").child(user.getUid()).child("outGeo").setValue(true);
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
 
             String geofenceTransitionDetails = getGeofenceTransitionDetails(this, geofenceTransition, triggeringGeofences);
@@ -77,18 +92,18 @@ public class GeofenceTransitionsIntentService extends IntentService{
             case Geofence.GEOFENCE_TRANSITION_ENTER:
                 return "進入了圍欄";
             case Geofence.GEOFENCE_TRANSITION_EXIT:
-                return "離開了圍欄";
+                return "注意";
             default:
                 return getString(R.string.unknown_geofence_error_transition);
         }
     }
     private void sendNotification(String notificationDetails){
-        Intent notificationIntent=new Intent(getApplicationContext(),GeoActivity.class);
+        Intent notificationIntent=new Intent(getApplicationContext(),MainActivity.class);
         TaskStackBuilder stackBuilder=TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(GeoActivity.class).addNextIntent(notificationIntent);
+        stackBuilder.addParentStack(MainActivity.class).addNextIntent(notificationIntent);
         PendingIntent notificationPendingIntent=stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder=new NotificationCompat.Builder(this);
-        builder.setSmallIcon(R.drawable.ic_clock).setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.ic_clock))
+        builder.setSmallIcon(R.drawable.ic_clock).setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_clock))
         .setColor(Color.RED).setContentTitle(notificationDetails).setContentText(getString((R.string.geofence_transition_notification))).setContentIntent(notificationPendingIntent);
         builder.setAutoCancel(true);
         NotificationManager mNotificationManager=(NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);

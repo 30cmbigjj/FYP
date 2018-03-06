@@ -69,14 +69,28 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
-    <Button
-        android:id="@+id/geofence"
+    <TextView
+        android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/logout"
-        android:text="加入圍欄" />
+        android:layout_toLeftOf="@+id/textView2"
+        android:layout_toStartOf="@+id/textView2"
+        android:layout_marginTop="16dp"
+        android:id="@+id/cc" />
+
+    <TextView
+        android:id="@+id/batteryLV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/cc"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/cc"
+        android:layout_below="@+id/cc"
+        android:layout_marginTop="22dp"
+        android:text="現在電力：" />
+
 
     <TextView
         android:id="@+id/textView2"

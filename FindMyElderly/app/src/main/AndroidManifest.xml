@@ -20,6 +20,7 @@
             android:value="AIzaSyBa2FPukpJpwZTM-F6rjdGhIXB8vkcCcog" />
 
         <activity android:name=".MainActivity" />
+        <service android:name=".GeofenceTransitionsIntentService"/>
         <activity android:name=".HelpActivity" />
         <activity
             android:name=".HomeActivity"
@@ -40,23 +41,30 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity_Family"
-            android:label="@string/title_activity_main__family"
-             >
-        </activity>
+            android:label="@string/title_activity_main__family"/>
+
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
 
         <activity
             android:name=".SignUpActivity_Elderly"
             android:label="@string/title_activity_sign_up__elderly"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".FamilyActivity"
+            android:label="FamilyActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service
-            android:name=".Map"
-            android:process=":map" />
+            android:name=".Maps"
+            android:process=":maps" />
 
         <activity
             android:name=".EditActivity"
             android:label="EditActivity"
-            android:theme="@style/AppTheme.NoActionBar"
              />
 
         <activity
@@ -74,11 +82,6 @@
                 <action android:name="com.google.firebase.INSTANT_ID_EVENT"/>
             </intent-filter>
         </service>
-        <activity
-            android:name=".GeoActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
         <service android:name=".GeofenceTransitionsIntentService"/>
     </application>
 

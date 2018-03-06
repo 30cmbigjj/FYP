@@ -88,7 +88,7 @@ public class HelpActivity extends AppCompatActivity {
         family.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDatabase.child("users").child(userId).child("Help").setValue(true);
+                mDatabase.child("users").child(userId).child("help").setValue(true);
                 Toast.makeText(HelpActivity.this, "已發送求救訊息", Toast.LENGTH_LONG).show();
                 calling();
             }
@@ -137,8 +137,8 @@ public class HelpActivity extends AppCompatActivity {
     }
 
     public void callPolice(){
-        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" ));
-        //startActivity(intent);
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + 999));
+        startActivity(intent);
     }
 
     public void calling(){

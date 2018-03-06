@@ -17,8 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignUpActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
@@ -31,9 +34,12 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText accountEdit;
     private EditText passwordEdit;
     private Button signUpBtn;
+    private Button familyBtn;
     private FirebaseUser user;
     private String userId;
+    private String editid;
     private String temp_familyId;
+    public String Editid;
 
 
     @Override
@@ -55,6 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
         passwordLayout.setErrorEnabled(true);
         accoutLayout.setErrorEnabled(true);
         signUpBtn = (Button) findViewById(R.id.signup_button);
+        familyBtn = (Button) findViewById(R.id.family);
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +91,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     temp_familyId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                                     mDatabase.child("users").child(userId).child("elderlyId").setValue(SignUpActivity_Elderly.temp_elderlyId);
                                     mDatabase.child("users").child(SignUpActivity_Elderly.temp_elderlyId).child("familyId").setValue(userId);
+
                                     Intent intent = new Intent();
                                     intent.setClass(SignUpActivity.this, HomeActivity.class); //jump back to home page
                                     startActivity(intent);
@@ -93,6 +101,13 @@ public class SignUpActivity extends AppCompatActivity {
                                 }
                             }
                         });
+            }
+        });
+
+        familyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignUpActivity.this, FamilyActivity.class));
             }
         });
     }
@@ -106,12 +121,11 @@ public class SignUpActivity extends AppCompatActivity {
         private String elderlyId;
 
 
-
         public User(String email) {
             this.email = email;
             this.userName = "";
-            this.type="family";
-            this.elderlyId="";
+            this.type = "family";
+            this.elderlyId = "";
 
 
         }
@@ -119,11 +133,18 @@ public class SignUpActivity extends AppCompatActivity {
         public String getEmail() {
             return email;
         }
-        public String getType(){return type;}
+
+        public String getType() {
+            return type;
+        }
+
         public String getUserName() {
             return userName;
         }
-        public String getElderlyId(){return elderlyId;}
+
+        public String getElderlyId() {
+            return elderlyId;
+        }
 
     }
 
@@ -135,5 +156,10 @@ public class SignUpActivity extends AppCompatActivity {
         Log.d("id", userId);
         mDatabase.child("users").child(userId).setValue(user);
     }
+
+
+
+
+
 
 }
